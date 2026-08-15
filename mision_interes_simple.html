@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión Interés Simple</title>
+<style>
+:root{--blue:#3157d5;--purple:#7c4dff;--green:#159957;--red:#d9363e;--orange:#f59e0b;--ink:#202938;--bg:#f3f6fb}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef3ff,#fbfcff);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--blue),var(--purple));color:white;padding:22px}.head{max-width:1150px;margin:auto}
+h1{margin:0 0 6px;font-size:clamp(24px,4vw,36px)}header p{margin:0}
+.app{max-width:1150px;margin:auto;padding:16px}.box{background:white;border-radius:18px;padding:17px;margin-bottom:15px;box-shadow:0 8px 24px #17255418}
+.challenge{border-left:6px solid var(--blue)}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:15px}.tab,.btn{border:0;border-radius:11px;padding:10px 14px;font-weight:bold;cursor:pointer}.tab{background:#fff;box-shadow:0 4px 12px #0001;white-space:nowrap}.tab.active,.btn.primary{background:var(--blue);color:#fff}.btn.warn{background:var(--orange);color:#fff}.btn.dark{background:#374151;color:#fff}.btn.light{background:#e9eef8}
+.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}.card{border:2px solid #dbe2ef;background:#fbfcff;border-radius:14px;padding:13px;cursor:pointer;text-align:center}.card:hover,.choice:hover{border-color:var(--blue);transform:translateY(-2px)}
+.card .icon{font-size:30px}.tag{display:inline-block;background:#e9efff;color:var(--blue);padding:4px 8px;border-radius:20px;font-size:11px;font-weight:bold}
+.feedback{min-height:55px;padding:11px;border-radius:11px;background:#f5f7fb;margin-top:12px;line-height:1.45}.success{background:#eafaf1;color:#126b3c}.hint{background:#fff7e6;color:#805b08}.error{background:#fff0f0;color:#a51f2a}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.stat{background:#f5f7fb;border-radius:11px;padding:9px;text-align:center}.stat b{display:block;color:var(--blue);font-size:21px}
+.progress{height:12px;background:#e4e8f0;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:.4s}
+.data{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.data div{background:#f7f9fc;border-radius:10px;padding:10px;text-align:center}.data b{display:block;color:var(--blue);font-size:19px}
+.choice{display:block;width:100%;text-align:left;border:2px solid #dbe2ef;background:#fff;border-radius:11px;padding:11px;margin:8px 0;cursor:pointer;font-weight:bold}
+.formula{background:#eef2ff;border-radius:14px;padding:15px;text-align:center;font-size:23px;font-weight:bold;color:#243b9b}.steps{background:#f8fafc;border-radius:13px;padding:12px;line-height:1.7}
+input,select{width:100%;padding:11px;border:2px solid #dbe2ef;border-radius:10px;font-size:16px;background:white}.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.simresult{font-size:19px;background:#f7f9fc;border-radius:14px;padding:15px;margin-top:12px}
+.table{width:100%;border-collapse:collapse}.table th,.table td{border:1px solid #dce2ec;padding:8px;text-align:center}.table th{background:#eef2ff;color:#243b9b}
+.final{background:linear-gradient(135deg,#eef2ff,#faf5ff);border-radius:16px;padding:18px;text-align:center}.score{font-size:44px;font-weight:bold;color:var(--blue)}
+@media(max-width:800px){.grid,.formgrid{grid-template-columns:1fr}.data{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+footer{text-align:center;color:#687386;padding:20px;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="head"><h1>💰 Misión Interés Simple</h1><p>3.º de Secundaria · Competencia: Resuelve problemas de cantidad</p></div></header>
+<main class="app">
+<div class="box challenge"><b>🎯 Situación retadora</b><br><br>
+En Huancayo, un grupo de estudiantes quiere aprender a tomar mejores decisiones con su dinero. Para lograrlo deberán resolver misiones relacionadas con ahorros, préstamos, compras y pequeños emprendimientos.
+<br><br><b>Tu misión:</b> interpreta los datos, selecciona estrategias, calcula y justifica tus respuestas.
+</div>
+
+<div class="box"><b id="level">Misión 1 · Detectives financieros</b><span style="float:right" id="pct">0%</span><div class="progress"><div class="bar" id="bar"></div></div></div>
+
+<nav class="tabs">
+<button class="tab active" data-p="p1">1. Detectives</button>
+<button class="tab" data-p="p2">2. Calcula</button>
+<button class="tab" data-p="p3">3. Estrategia</button>
+<button class="tab" data-p="p4">4. Simulador</button>
+<button class="tab" data-p="p5">5. ¿Quién tiene razón?</button>
+<button class="tab" data-p="p6">6. Reto final</button>
+</nav>
+
+<section id="p1" class="panel active">
+<div class="box">
+<h2>🕵️ Misión 1: Detectives financieros</h2>
+<p>Identifica el papel de cada dato. No calcules todavía: primero comprende la situación.</p>
+<div id="detective"></div>
+<div class="feedback" id="dfb">Lee con atención y selecciona el dato solicitado.</div>
+<div class="controls"><button class="btn warn" onclick="detectiveHint()">💡 Pista</button><button class="btn primary" onclick="newDetective()">🎲 Nueva situación</button></div>
+<div class="stats"><div class="stat"><b id="dh">0</b>Aciertos</div><div class="stat"><b id="de">0</b>Errores</div><div class="stat"><b id="dt">0</b>Intentos</div><div class="stat"><b id="dc">0</b>Completadas</div></div>
+</div>
+</section>
+
+<section id="p2" class="panel">
+<div class="grid">
+<div class="box"><h2>🧮 Misión 2: Calcula</h2><div id="problem"></div><div id="answers"></div><div class="feedback" id="cfb">Selecciona una respuesta.</div>
+<div class="controls"><button class="btn warn" onclick="calcHint()">💡 Pista</button><button class="btn primary" onclick="newCalc()">🎲 Nuevo problema</button></div></div>
+<div class="box"><h2>📐 Herramienta matemática</h2>
+<div class="formula">I = C × r × t</div>
+<p><b>I</b> = interés &nbsp; | &nbsp; <b>C</b> = capital &nbsp; | &nbsp; <b>r</b> = tasa decimal &nbsp; | &nbsp; <b>t</b> = tiempo</p>
+<div class="formula">M = C + I</div>
+<div class="steps"><b>Recuerda:</b><br>1. Convierte el porcentaje a decimal.<br>2. Expresa el tiempo en la unidad compatible con la tasa.<br>3. Calcula el interés.<br>4. Si te piden el monto, suma capital + interés.</div>
+</div></div>
+</section>
+
+<section id="p3" class="panel">
+<div class="box"><h2>🧠 Misión 3: ¿Qué estrategia usarías?</h2><p>Antes de calcular, decide qué procedimiento es más adecuado.</p>
+<div id="strategy"></div><div id="sopts"></div><div class="feedback" id="sfb">Selecciona la estrategia que consideres correcta.</div>
+<div class="controls"><button class="btn primary" onclick="newStrategy()">🔄 Otra situación</button></div></div>
+</section>
+
+<section id="p4" class="panel">
+<div class="box"><h2>🏦 Misión 4: Simulador financiero</h2><p>Modifica los datos y observa cómo cambian el interés y el monto.</p>
+<div class="formgrid">
+<label>Capital (S/)<input id="C" type="number" value="1500" min="0"></label>
+<label>Tasa anual (%)<input id="R" type="number" value="8" min="0" step="0.1"></label>
+<label>Tiempo (años)<input id="T" type="number" value="2" min="0" step="0.1"></label>
+</div>
+<div class="controls"><button class="btn primary" onclick="simulate()">Calcular</button><button class="btn light" onclick="randomSim()">🎲 Datos aleatorios</button></div>
+<div class="simresult" id="simresult">Completa los datos y pulsa <b>Calcular</b>.</div>
+</div>
+</section>
+
+<section id="p5" class="panel">
+<div class="box" style="max-width:850px;margin:auto"><h2>⚖️ Misión 5: ¿Quién tiene razón?</h2><p>Compara procedimientos. Una respuesta correcta debe estar respaldada por un razonamiento matemático.</p>
+<div id="reason"></div><div id="ropts"></div><div class="feedback" id="rfb">Elige el procedimiento que esté correctamente fundamentado.</div>
+<div class="controls"><button class="btn primary" onclick="newReason()">🔄 Nuevo caso</button></div></div>
+</section>
+
+<section id="p6" class="panel">
+<div class="box"><h2>🏆 Reto final: Operación financiera</h2>
+<p>Resuelve entre 8 y 10 situaciones. Lee, identifica los datos, calcula y elige la respuesta.</p>
+<div id="finalq"></div><div id="finalopts"></div><div class="feedback" id="ffb">Comienza el reto.</div>
+<div class="progress"><div class="bar" id="fbar"></div></div><p id="fprog">0 / 8</p>
+<div id="finalsummary"></div>
+<div class="controls"><button class="btn primary" onclick="newFinal()">🎲 Nuevo reto</button><button class="btn dark" onclick="resetGame()">↺ Reiniciar</button></div>
+</div>
+</section>
+</main>
+<footer>Material educativo interactivo creado por <b>ERamirezC</b></footer>
+
+<script>
+const money=n=>new Intl.NumberFormat("es-PE",{style:"currency",currency:"PEN",minimumFractionDigits:2}).format(n);
+const pct=n=>(n*100).toFixed(1)+"%";
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+
+let DS=[
+["capital","María deposita S/ 1800 en una cuenta que ofrece 6% anual durante 2 años. ¿Cuál es el capital?",["S/ 108","6%","2 años","S/ 1800"],3,"El capital es la cantidad inicial de dinero: S/ 1800."],
+["tasa","Un joven presta S/ 2500 al 8% anual durante 18 meses. ¿Cuál es la tasa?",["S/ 2500","8% anual","18 meses","S/ 360"],1,"La tasa indica el porcentaje que se aplica al capital."],
+["tiempo","Rosa invierte S/ 3000 al 5% anual durante 9 meses. ¿Qué dato representa el tiempo?",["5%","S/ 3000","9 meses","S/ 135"],2,"El tiempo es el periodo durante el cual se genera el interés."],
+["interes","Un ahorro de S/ 2000 al 7% anual durante 2 años genera S/ 280. ¿Qué representa S/ 280?",["Capital","Tasa","Interés","Monto"],2,"El interés es la ganancia generada por el capital."],
+["monto","Se invierten S/ 1500 y se obtienen S/ 180 de interés. ¿Cuál es el monto?",["S/ 1320","S/ 1500","S/ 1680","S/ 180"],2,"El monto es capital + interés: S/ 1500 + S/ 180 = S/ 1680."]
+];
+let dcur,dh=0,de=0,dt=0,dc=0;
+function newDetective(){dcur=sh(DS)[0];document.getElementById("detective").innerHTML=`<div class="box" style="background:#f8faff"><b>Situación:</b> ${dcur[1]}<br><br><b>¿Qué dato se solicita?</b></div><div id="dopts"></div>`;let o=document.getElementById("dopts");dcur[2].forEach((x,i)=>{let b=document.createElement("button");b.className="choice";b.textContent=String.fromCharCode(65+i)+". "+x;b.onclick=()=>{dt++;if(i===dcur[3]){dh++;dc++;show("dfb","success","✅ Correcto. "+dcur[4])}else{de++;show("dfb","hint","🔎 No es ese dato. Vuelve a leer qué se está preguntando.")}dstats()};o.appendChild(b)});show("dfb","","Lee con atención y selecciona el dato solicitado.");}
+function dstats(){["dh","de","dt","dc"].forEach(x=>document.getElementById(x).textContent=eval(x))}
+function detectiveHint(){show("dfb","hint","💡 Pista: distingue siempre entre capital (dinero inicial), tasa (%), tiempo, interés (ganancia) y monto (capital + interés).")}
+
+let calc;
+function newCalc(){
+ let C=sh([800,1000,1200,1500,1800,2000,2500,3000])[0],r=sh([.04,.05,.06,.08,.10,.12])[0],t=sh([1,2,3])[0],I=C*r*t,M=C+I;
+ calc={C,r,t,I,M};let asks=sh(["I","M"])[0];
+ document.getElementById("problem").innerHTML=`<div class="box" style="background:#f8faff"><b>Situación:</b> Una estudiante deposita <b>${money(C)}</b> a una tasa de interés simple del <b>${pct(r)}</b> anual durante <b>${t} ${t===1?"año":"años"}</b>.<br><br><b>¿Cuánto ${asks==="I"?"interés generará":"dinero tendrá al finalizar el periodo"}?</b></div>`;
+ let correct=asks==="I"?I:M, vals=sh([correct,correct+50,Math.max(0,correct-50),C*r*(t+1)]).map(x=>Math.round(x*100)/100);
+ let o=document.getElementById("answers");o.innerHTML="";vals.forEach(x=>{let b=document.createElement("button");b.className="choice";b.textContent=money(x);b.onclick=()=>{if(Math.abs(x-correct)<.01){show("cfb","success",`✅ Correcto. ${asks==="I"?"I = C × r × t = "+money(I):"M = C + I = "+money(M)}.`)}else show("cfb","hint","🔎 Revisa primero la conversión del porcentaje y después aplica I = C × r × t.");};o.appendChild(b)});calc.ask=asks;show("cfb","","Selecciona una respuesta.");}
+function calcHint(){show("cfb","hint",`💡 Pista: ${calc.ask==="I"?"calcula primero I = C × r × t.":"calcula el interés y luego suma M = C + I."}`)}
+
+let strategy,STR=[
+["Para un capital de S/ 2400 al 6% anual durante 2 años, ¿qué estrategia es adecuada?",["Sumar 6 + 2 y multiplicar por 2400.","Convertir 6% a 0,06 y aplicar I = 2400 × 0,06 × 2.","Multiplicar 2400 × 6 sin usar el tiempo.","Dividir 2400 entre 2."],1,"La tasa porcentual debe convertirse a decimal y se aplica al capital durante el tiempo."],
+["Una tasa es anual, pero el problema indica 6 meses. ¿Qué debes cuidar?",["Ignorar los meses.","Usar 6 como si fueran 6 años.","Expresar el tiempo en años: 6/12 = 0,5.","Cambiar el capital."],2,"Las unidades de tiempo deben ser compatibles con la tasa anual."],
+["Te preguntan cuánto dinero tendrás al final de un préstamo con interés simple. ¿Qué debes hacer?",["Calcular solo la tasa.","Calcular I y luego M = C + I.","Restar el interés del capital.","Multiplicar capital por monto."],1,"El monto representa el total acumulado: capital más interés."]
+];
+function newStrategy(){strategy=sh(STR)[0];document.getElementById("strategy").innerHTML=`<div class="box" style="background:#f8faff"><b>${strategy[0]}</b></div>`;let o=document.getElementById("sopts");o.innerHTML="";strategy[1].forEach((x,i)=>{let b=document.createElement("button");b.className="choice";b.textContent=String.fromCharCode(65+i)+". "+x;b.onclick=()=>show("sfb",i===strategy[2]?"success":"hint",i===strategy[2]?"✅ Correcto. "+strategy[3]:"🔎 Esa estrategia no considera correctamente las variables del interés simple.") ;o.appendChild(b)});show("sfb","","Selecciona una estrategia.");}
+
+function simulate(){let C=+document.getElementById("C").value,R=+document.getElementById("R").value,T=+document.getElementById("T").value;if(C<0||R<0||T<0)return;let I=C*(R/100)*T,M=C+I;document.getElementById("simresult").innerHTML=`<div class="data"><div><b>${money(C)}</b>Capital</div><div><b>${R}%</b>Tasa</div><div><b>${T}</b>años</div><div><b>${money(I)}</b>Interés</div><div><b>${money(M)}</b>Monto</div></div><p>📌 <b>Interpretación:</b> por cada ${money(C)} invertidos, al ${R}% anual durante ${T} años, se genera un interés simple de <b>${money(I)}</b>.</p>`}
+function randomSim(){document.getElementById("C").value=sh([500,800,1000,1500,2000,2500,3000])[0];document.getElementById("R").value=sh([4,5,6,8,10,12])[0];document.getElementById("T").value=sh([1,2,3,4])[0];simulate()}
+
+let reasons=[
+["Pedro calcula el interés de S/ 2000 al 10% anual durante 2 años así: I = 2000 × 10 × 2 = S/ 40 000. Ana convierte 10% en 0,10. ¿Quién aplica correctamente el porcentaje?",["Pedro, porque 10 es el porcentaje.","Ana, porque 10% = 0,10 al trabajar con la fórmula.","Ambos, porque 10 y 0,10 son iguales.","Ninguno."],1,"En la fórmula se utiliza la tasa en forma decimal: 10% = 0,10."],
+["Lucía obtiene I = S/ 180 para C = S/ 1500, r = 6% y t = 2 años. ¿Es correcto?",["Sí, porque 1500 × 0,06 × 2 = 180.","No, porque debe multiplicar por 6.","No, porque el interés siempre es menor que S/ 100.","Sí, pero solo si la tasa es mensual."],0,"La sustitución correcta produce 180."],
+["Dos estudiantes calculan el monto: una suma C + I y otra resta C - I. ¿Cuál corresponde al monto?",["La resta.","La suma.","Depende del color del billete.","Ninguna."],1,"El monto es el capital inicial más el interés generado."]
+];
+let reason;
+function newReason(){reason=sh(reasons)[0];document.getElementById("reason").innerHTML=`<div class="box" style="background:#f8faff"><b>Caso:</b> ${reason[0]}</div>`;let o=document.getElementById("ropts");o.innerHTML="";reason[1].forEach((x,i)=>{let b=document.createElement("button");b.className="choice";b.textContent=String.fromCharCode(65+i)+". "+x;b.onclick=()=>show("rfb",i===reason[2]?"success":"hint",i===reason[2]?"✅ Correcto. "+reason[3]:"🔎 Revisa las operaciones y las unidades antes de aceptar el procedimiento.");o.appendChild(b)});show("rfb","","Elige el procedimiento correctamente fundamentado.");}
+
+let fq=[],fi=0,fh=0,fe=0;
+function makeFinalQ(){let C=sh([600,800,1000,1200,1500,1800,2000,2500])[0],r=sh([.04,.05,.06,.08,.10])[0],t=sh([.5,1,2,3])[0],ask=sh(["I","M"])[0],I=C*r*t,M=C+I,correct=ask==="I"?I:M;let vals=sh([correct,correct+20,Math.max(0,correct-20),C*r*(t+1)]).map(x=>Math.round(x*100)/100);return{C,r,t,ask,correct,vals,I,M}}
+function newFinal(){fq=Array.from({length:8},makeFinalQ);fi=0;fh=0;fe=0;document.getElementById("finalsummary").innerHTML="";renderFinal()}
+function renderFinal(){if(fi>=fq.length){finishFinal();return}let q=fq[fi];document.getElementById("finalq").innerHTML=`<div class="box" style="background:#f8faff"><b>Problema ${fi+1} de ${fq.length}</b><br><br>Se deposita <b>${money(q.C)}</b> al <b>${pct(q.r)} anual</b> durante <b>${q.t} ${q.t===1?"año":"años"}</b>.<br><br>¿Cuánto ${q.ask==="I"?"interés se genera":"dinero habrá al final"}?</div>`;let o=document.getElementById("finalopts");o.innerHTML="";q.vals.forEach(x=>{let b=document.createElement("button");b.className="choice";b.textContent=money(x);b.onclick=()=>{if(Math.abs(x-q.correct)<.01){fh++;show("ffb","success",`✅ Correcto. ${q.ask==="I"?"I = "+money(q.I):"M = "+money(q.M)}.`)}else{fe++;show("ffb","hint","🔎 Incorrecto. Revisa I = C × r × t y verifica si te piden interés o monto.");}setTimeout(()=>{fi++;updateFinal();renderFinal()},750)};o.appendChild(b)});document.getElementById("fprog").textContent=`${fi} / ${fq.length}`;show("ffb","","Selecciona tu respuesta.");updateFinal()}
+function updateFinal(){let v=fi/fq.length*100;document.getElementById("fbar").style.width=v+"%";document.getElementById("fprog").textContent=`${fi} / ${fq.length}`}
+function finishFinal(){let score=Math.round(fh/fq.length*100);document.getElementById("fbar").style.width="100%";document.getElementById("fprog").textContent=`${fq.length} / ${fq.length}`;document.getElementById("finalsummary").innerHTML=`<div class="final"><div class="score">${score}%</div><h2>${score>=90?"🌟 Excelente dominio":score>=70?"👏 Muy buen trabajo":"💪 Sigue practicando"}</h2><div class="stats"><div class="stat"><b>${fh}</b>Aciertos</div><div class="stat"><b>${fe}</b>Errores</div><div class="stat"><b>${fh+fe}</b>Intentos</div><div class="stat"><b>${fq.length}</b>Problemas</div></div><p><b>Competencia movilizada:</b> interpreta cantidades, emplea estrategias de cálculo, comunica procedimientos y justifica resultados.</p></div>`}
+function show(id,cl,t){let e=document.getElementById(id);e.className="feedback "+cl;e.textContent=t}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.p).classList.add("active")});
+function resetGame(){newDetective();newCalc();newStrategy();randomSim();newReason();newFinal()}
+newDetective();newCalc();newStrategy();randomSim();newReason();newFinal();
+</script>
+</body>
+</html>
